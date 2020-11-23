@@ -8,8 +8,8 @@ import { DataGrid } from '@material-ui/data-grid';
 import YodlrApi from './YodlrApi';
 import Register from './RegisterPage';
 
-function Admin({ users }) {
-	console.log('USERS ADMIN', users);
+function UsersTable({ users }) {
+	console.log('USERS UsersTable', users);
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -19,28 +19,15 @@ function Admin({ users }) {
 		{ field: 'state', headerName: 'State', width: 120 }
 	];
 
-	// const rows = users.map((user) => ({
-	// 	id        : user.id,
-	// 	lastName  : user.lastName,
-	// 	firstName : user.firstName,
-	// 	email     : user.email,
-	// 	state     : user.state
-	// }));
-
 	console.log('columns', columns);
 	return (
-		<Grid item className="Admin">
-			<Typography>Admin</Typography>
-			<Grid item>
-				<DataGrid
-					rows={users}
-					columns={columns}
-					pageSize={10}
-					checkboxSelection
-					autoHeight
-				/>
-			</Grid>
-		</Grid>
+		<DataGrid
+			rows={users}
+			columns={columns}
+			pageSize={10}
+			checkboxSelection
+			autoHeight
+		/>
 	);
 }
-export default Admin;
+export default UsersTable;

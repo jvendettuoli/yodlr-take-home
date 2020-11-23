@@ -5,39 +5,18 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 import YodlrApi from './YodlrApi';
-import Register from './RegisterPage';
-import Admin from './Admin';
+import RegisterPage from './RegisterPage';
+import Admin from './UsersTable';
+import Routes from './Routes';
 
 function App() {
-	const [ users, setUsers ] = useState();
-	useEffect(() => {
-		async function getUsers() {
-			try {
-				let users = await YodlrApi.getUsers();
-				setUsers(users);
-				console.log('USERS', users);
-			} catch (err) {
-				setUsers(null);
-				console.log(err);
-			}
-		}
-		getUsers();
-	}, []);
-
-	const adminShow = () => {
-		if (users) {
-			return <Admin users={users} />;
-		}
-		else return <div>LOADING...</div>;
-	};
-
-	console.log('users oouter', users);
+	console.debug('App Component - Start');
 	return (
-		<Container className="App">
-			<Typography>Yodlr</Typography>
-			<Register />
-			{adminShow()}
-		</Container>
+		<BrowserRouter>
+			<Container className="App">
+				<Routes />
+			</Container>
+		</BrowserRouter>
 	);
 }
 
