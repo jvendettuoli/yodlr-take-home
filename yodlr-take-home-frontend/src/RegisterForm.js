@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -8,7 +9,19 @@ import Button from '@material-ui/core/Button';
 
 import YodlrApi from './YodlrApi';
 
+const useStyles = makeStyles({
+	form : {
+		display       : 'flex',
+		flexDirection : 'column',
+		'& div'       : {
+			marginBottom : 10
+		}
+	}
+});
+
 function RegisterForm() {
+	const classes = useStyles();
+
 	const [ formData, setFormData ] = useState({
 		firstName : '',
 		lastName  : '',
@@ -27,7 +40,6 @@ function RegisterForm() {
 
 	const handleSubmit = async (evt) => {
 		evt.preventDefault();
-		const type = evt.target.name;
 
 		try {
 			const user = await YodlrApi.createUser(formData);
@@ -39,7 +51,7 @@ function RegisterForm() {
 
 	return (
 		<form
-			className="RegisterForm"
+			className={classes.form}
 			name="register"
 			onSubmit={handleSubmit}
 		>
@@ -76,12 +88,7 @@ function RegisterForm() {
 				onChange={handleChange}
 				autoComplete="email"
 			/>
-			<Button
-				type="submit"
-				variant="contained"
-				color="primary"
-				fullWidth
-			>
+			<Button type="submit" variant="contained" fullWidth>
 				Register
 			</Button>
 		</form>
