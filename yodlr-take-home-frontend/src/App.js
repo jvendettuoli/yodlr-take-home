@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 
 import YodlrApi from './YodlrApi';
-import Register from './Register';
+import Register from './RegisterPage';
 import Admin from './Admin';
 
 function App() {

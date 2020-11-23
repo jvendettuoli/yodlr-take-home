@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { DataGrid } from '@material-ui/data-grid';
 
 import YodlrApi from './YodlrApi';
-import Register from './Register';
+import Register from './RegisterPage';
 
 function Admin({ users }) {
 	console.log('USERS ADMIN', users);
