@@ -13,9 +13,9 @@ function App() {
 	console.debug('App Component - Start');
 	return (
 		<BrowserRouter>
-			<Container className="App">
+			<div className="App">
 				<Routes />
-			</Container>
+			</div>
 		</BrowserRouter>
 	);
 }
