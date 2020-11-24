@@ -20,7 +20,7 @@ function RegisterPage() {
 			<Typography className={classes.title} variant="h2">
 				Register User
 			</Typography>
-			<RegisterForm />
+			<RegisterForm isAdmin={false} />
 		</Container>
 	);
 }

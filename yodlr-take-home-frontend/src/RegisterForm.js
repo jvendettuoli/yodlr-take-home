@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import UserContext from './UserContext';
 
 import YodlrApi from './YodlrApi';
 
@@ -16,14 +18,16 @@ const useStyles = makeStyles({
 	}
 });
 
-function RegisterForm({ setUsersUpToDate }) {
+function RegisterForm({ isAdmin, setUsersUpToDate = true }) {
 	const classes = useStyles();
+	const history = useHistory();
 	const initialFormData = {
 		firstName : '',
 		lastName  : '',
 		email     : ''
 	};
 	const [ formData, setFormData ] = useState(initialFormData);
+	const { currentUser, setCurrentUser } = useContext(UserContext);
 
 	const handleChange = (evt) => {
 		const { name, value } = evt.target;
@@ -37,9 +41,15 @@ function RegisterForm({ setUsersUpToDate }) {
 	const handleSubmit = async (evt) => {
 		evt.preventDefault();
 		try {
-			await YodlrApi.createUser(formData);
+			const user = await YodlrApi.createUser(formData);
 			setFormData(initialFormData);
-			setUsersUpToDate(false);
+			if (!isAdmin) {
+				setCurrentUser(user);
+				history.push(`/users/${user.id}`);
+			}
+			else {
+				setUsersUpToDate(false);
+			}
 		} catch (e) {
 			console.log(e);
 		}

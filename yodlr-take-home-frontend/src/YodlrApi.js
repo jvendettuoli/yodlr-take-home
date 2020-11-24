@@ -39,10 +39,16 @@ class YodlrApi {
 		// console.log('RES', res);
 		return res;
 	}
+	static async getUser(userId) {
+		console.log('YodlrApi Class getUser - Start');
+		let res = await this.request(`users/${userId}`);
+		// console.log('RES', res);
+		return res;
+	}
 	static async createUser(data) {
 		console.log('YodlrApi Class createUser - Start');
 		let res = await this.request(`users/`, data, 'post');
-		// console.log('RES', res);
+		console.log('CREATE RES', res);
 		return res;
 	}
 	static async deleteUser(userId) {

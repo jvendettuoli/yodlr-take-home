@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import AdminPage from './AdminPage';
 import RegisterPage from './RegisterPage';
 import Home from './Home';
+import UserPage from './UserPage';
 
 function Routes() {
 	return (
@@ -10,6 +11,9 @@ function Routes() {
 			<Switch>
 				<Route exact path="/">
 					<Home />
+				</Route>
+				<Route exact path="/users/:id">
+					<UserPage />
 				</Route>
 				<Route exact path="/admin">
 					<AdminPage />
