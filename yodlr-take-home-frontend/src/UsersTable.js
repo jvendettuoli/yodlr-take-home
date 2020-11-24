@@ -1,15 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { DataGrid } from '@material-ui/data-grid';
 
-import YodlrApi from './YodlrApi';
-import Register from './RegisterPage';
-
-function UsersTable({ users }) {
-	// console.log('USERS UsersTable', users);
+function UsersTable({ users, setSelectedRows }) {
+	console.debug('UserTable Component - Start');
 
 	const columns = [
 		{ field: 'id', headerName: 'ID', width: 70 },
@@ -19,7 +13,10 @@ function UsersTable({ users }) {
 		{ field: 'state', headerName: 'State', width: 120 }
 	];
 
-	// console.log('columns', columns);
+	const handleChange = (evt) => {
+		setSelectedRows(evt.rowIds);
+	};
+
 	return (
 		<DataGrid
 			rows={users}
@@ -27,6 +24,7 @@ function UsersTable({ users }) {
 			pageSize={10}
 			checkboxSelection
 			autoHeight
+			onSelectionChange={handleChange}
 		/>
 	);
 }

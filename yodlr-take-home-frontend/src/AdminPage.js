@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Backdrop from '@material-ui/core/Backdrop';
 
 import YodlrApi from './YodlrApi';
 import RegisterForm from './RegisterForm';
@@ -35,7 +33,8 @@ function AdminPage() {
 
 	const classes = useStyles();
 
-	const [ users, setUsers ] = useState();
+	const [ users, setUsers ] = useState([]);
+	const [ selectedRows, setSelectedRows ] = useState([]);
 	const [ usersUpToDate, setUsersUpToDate ] = useState(false);
 	const [ showRegisterForm, setShowRegisterForm ] = useState(false);
 
@@ -46,7 +45,6 @@ function AdminPage() {
 					try {
 						let users = await YodlrApi.getUsers();
 						setUsers(users);
-						console.log('USERS', users);
 					} catch (err) {
 						setUsers(null);
 						console.log(err);
@@ -61,8 +59,13 @@ function AdminPage() {
 	);
 
 	const usersLoaded = () => {
-		if (users) {
-			return <UsersTable users={users} />;
+		if (usersUpToDate) {
+			return (
+				<UsersTable
+					users={users}
+					setSelectedRows={setSelectedRows}
+				/>
+			);
 		}
 		else return <div>LOADING...</div>;
 	};
@@ -77,12 +80,25 @@ function AdminPage() {
 		}
 	};
 
-	const handleToggle = () => {
+	const handleToggleForm = () => {
 		setShowRegisterForm(!showRegisterForm);
 	};
 
+	const handleDelete = () => {
+		selectedRows.forEach(async (userId) => {
+			try {
+				await YodlrApi.deleteUser(userId);
+			} catch (e) {
+				console.log(
+					`Error while attempting to delete user ${userId}: ${e}`
+				);
+			}
+		});
+		setUsersUpToDate(false);
+	};
+
 	return (
-		<Grid container className="AdminPage">
+		<Grid container className="AdminPage" style={{ height: '100%' }}>
 			<Grid item xs={12}>
 				<Typography
 					className={classes.title}
@@ -93,13 +109,16 @@ function AdminPage() {
 					Admin Dashboard
 				</Typography>
 			</Grid>
-			<Grid item container xs={12} className={classes.users}>
+			<Grid container item xs={12} className={classes.users}>
 				<Grid item xs={12}>
 					<Typography variant="h4">Users</Typography>
 				</Grid>
 				<Grid container item xs={12} className={classes.buttons}>
 					<Grid item xs={3}>
-						<Button variant="contained" onClick={handleToggle}>
+						<Button
+							variant="contained"
+							onClick={handleToggleForm}
+						>
 							Register a New User
 						</Button>
 					</Grid>
@@ -109,7 +128,11 @@ function AdminPage() {
 						</Button>
 					</Grid>
 					<Grid item xs={3}>
-						<Button variant="contained" color="secondary">
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={handleDelete}
+						>
 							Delete Selected Users
 						</Button>
 					</Grid>

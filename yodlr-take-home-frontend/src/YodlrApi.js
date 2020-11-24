@@ -45,6 +45,16 @@ class YodlrApi {
 		// console.log('RES', res);
 		return res;
 	}
+	static async deleteUser(userId) {
+		console.log('YodlrApi Class deleteUser - Start');
+		let res = await this.request(`users/${userId}`, {}, 'delete');
+		return res;
+	}
+	static async updateUser(userId, user) {
+		console.log('YodlrApi Class updateUser - Start');
+		let res = await this.request(`users/${userId}`, user, 'delete');
+		return res;
+	}
 }
 
 export default YodlrApi;
