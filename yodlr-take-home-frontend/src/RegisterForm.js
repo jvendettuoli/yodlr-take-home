@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -19,14 +16,14 @@ const useStyles = makeStyles({
 	}
 });
 
-function RegisterForm() {
+function RegisterForm({ setUsersUpToDate }) {
 	const classes = useStyles();
-
-	const [ formData, setFormData ] = useState({
+	const initialFormData = {
 		firstName : '',
 		lastName  : '',
 		email     : ''
-	});
+	};
+	const [ formData, setFormData ] = useState(initialFormData);
 
 	const handleChange = (evt) => {
 		const { name, value } = evt.target;
@@ -35,15 +32,14 @@ function RegisterForm() {
 			...fData,
 			[name] : value
 		}));
-		console.log('formdata', formData);
 	};
 
 	const handleSubmit = async (evt) => {
 		evt.preventDefault();
-
 		try {
-			const user = await YodlrApi.createUser(formData);
-			console.log('USER', user);
+			await YodlrApi.createUser(formData);
+			setFormData(initialFormData);
+			setUsersUpToDate(false);
 		} catch (e) {
 			console.log(e);
 		}
@@ -64,6 +60,7 @@ function RegisterForm() {
 					shrink : true
 				}}
 				onChange={handleChange}
+				value={formData.firstName}
 				autoComplete="given-name"
 			/>
 			<TextField
@@ -75,6 +72,7 @@ function RegisterForm() {
 					shrink : true
 				}}
 				onChange={handleChange}
+				value={formData.lastName}
 				autoComplete="family-name"
 			/>
 			<TextField
@@ -86,6 +84,7 @@ function RegisterForm() {
 					shrink : true
 				}}
 				onChange={handleChange}
+				value={formData.email}
 				autoComplete="email"
 			/>
 			<Button type="submit" variant="contained" fullWidth>

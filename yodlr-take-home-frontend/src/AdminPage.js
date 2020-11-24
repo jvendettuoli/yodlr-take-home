@@ -1,48 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import { DataGrid } from '@material-ui/data-grid';
+import Button from '@material-ui/core/Button';
+import Backdrop from '@material-ui/core/Backdrop';
 
 import YodlrApi from './YodlrApi';
-import Register from './RegisterPage';
+import RegisterForm from './RegisterForm';
 import UsersTable from './UsersTable';
 
 const useStyles = makeStyles({
-	title : {
+	title        : {
 		backgroundColor : '#004285',
 		color           : 'white'
 	},
-	table : {
+	users        : {
 		margin : 20
+	},
+	buttons      : {
+		display        : 'flex',
+		justifyContent : 'space-around',
+		marginTop      : 10,
+		marginBottom   : 10
+	},
+	registerForm : {
+		margin : 10
 	}
 });
 
 function AdminPage() {
+	console.debug('AdminPage Component - Start');
+
 	const classes = useStyles();
 
 	const [ users, setUsers ] = useState();
-	useEffect(() => {
-		async function getUsers() {
-			try {
-				let users = await YodlrApi.getUsers();
-				setUsers(users);
-				console.log('USERS', users);
-			} catch (err) {
-				setUsers(null);
-				console.log(err);
+	const [ usersUpToDate, setUsersUpToDate ] = useState(false);
+	const [ showRegisterForm, setShowRegisterForm ] = useState(false);
+
+	useEffect(
+		() => {
+			if (!usersUpToDate) {
+				async function getUsers() {
+					try {
+						let users = await YodlrApi.getUsers();
+						setUsers(users);
+						console.log('USERS', users);
+					} catch (err) {
+						setUsers(null);
+						console.log(err);
+					}
+
+					setUsersUpToDate(true);
+				}
+				getUsers();
 			}
-		}
-		getUsers();
-	}, []);
+		},
+		[ usersUpToDate ]
+	);
 
 	const usersLoaded = () => {
 		if (users) {
 			return <UsersTable users={users} />;
 		}
 		else return <div>LOADING...</div>;
+	};
+
+	const registerUserForm = () => {
+		if (showRegisterForm) {
+			return (
+				<Grid item xs={12} className={classes.registerForm}>
+					<RegisterForm setUsersUpToDate={setUsersUpToDate} />
+				</Grid>
+			);
+		}
+	};
+
+	const handleToggle = () => {
+		setShowRegisterForm(!showRegisterForm);
 	};
 
 	return (
@@ -57,9 +93,31 @@ function AdminPage() {
 					Admin Dashboard
 				</Typography>
 			</Grid>
-			<Grid item xs={12} className={classes.table}>
-				<Typography variant="h4">Users</Typography>
-				{usersLoaded()}
+			<Grid item container xs={12} className={classes.users}>
+				<Grid item xs={12}>
+					<Typography variant="h4">Users</Typography>
+				</Grid>
+				<Grid container item xs={12} className={classes.buttons}>
+					<Grid item xs={3}>
+						<Button variant="contained" onClick={handleToggle}>
+							Register a New User
+						</Button>
+					</Grid>
+					<Grid item xs={3}>
+						<Button variant="contained" color="primary">
+							Activate Selected Users
+						</Button>
+					</Grid>
+					<Grid item xs={3}>
+						<Button variant="contained" color="secondary">
+							Delete Selected Users
+						</Button>
+					</Grid>
+				</Grid>
+				{registerUserForm()}
+				<Grid item xs={12}>
+					{usersLoaded()}
+				</Grid>
 			</Grid>
 		</Grid>
 	);

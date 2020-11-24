@@ -36,13 +36,13 @@ class YodlrApi {
 	static async getUsers() {
 		console.log('YodlrApi Class getUsers - Start');
 		let res = await this.request(`users/`);
-		console.log('RES', res);
+		// console.log('RES', res);
 		return res;
 	}
 	static async createUser(data) {
 		console.log('YodlrApi Class createUser - Start');
 		let res = await this.request(`users/`, data, 'post');
-		console.log('RES', res);
+		// console.log('RES', res);
 		return res;
 	}
 }
