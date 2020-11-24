@@ -97,6 +97,21 @@ function AdminPage() {
 		setUsersUpToDate(false);
 	};
 
+	const handleActivate = () => {
+		selectedRows.forEach(async (userId) => {
+			try {
+				let user = users.filter((user) => user.id == userId);
+				user[0].state = 'active';
+				await YodlrApi.updateUser(userId, user[0]);
+			} catch (e) {
+				console.log(
+					`Error while attempting to update user ${userId}: ${e}`
+				);
+			}
+		});
+		setUsersUpToDate(false);
+	};
+
 	return (
 		<Grid container className="AdminPage" style={{ height: '100%' }}>
 			<Grid item xs={12}>
@@ -123,7 +138,11 @@ function AdminPage() {
 						</Button>
 					</Grid>
 					<Grid item xs={3}>
-						<Button variant="contained" color="primary">
+						<Button
+							variant="contained"
+							color="primary"
+							onClick={handleActivate}
+						>
 							Activate Selected Users
 						</Button>
 					</Grid>
