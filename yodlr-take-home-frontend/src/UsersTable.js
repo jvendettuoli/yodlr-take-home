@@ -2,7 +2,6 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { DataGrid } from '@material-ui/data-grid';
-import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
 function UsersTable({ users, setSelectedRows }) {

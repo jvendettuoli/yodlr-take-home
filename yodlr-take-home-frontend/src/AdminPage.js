@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Link from '@material-ui/core/Link';
 
 import YodlrApi from './YodlrApi';
 import RegisterForm from './RegisterForm';
@@ -114,7 +117,22 @@ function AdminPage() {
 
 	return (
 		<Grid container className="AdminPage" style={{ height: '100%' }}>
-			<Grid item xs={12}>
+			<Grid item xs={1}>
+				<Typography
+					className={classes.title}
+					variant="h2"
+					gutterBottom
+					align="center"
+				>
+					<Link component={RouterLink} to="/">
+						<ArrowBackIcon
+							style={{ color: 'white' }}
+							fontSize="large"
+						/>
+					</Link>
+				</Typography>
+			</Grid>
+			<Grid item xs={11}>
 				<Typography
 					className={classes.title}
 					variant="h2"

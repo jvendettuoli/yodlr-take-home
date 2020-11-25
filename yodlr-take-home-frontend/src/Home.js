@@ -62,7 +62,7 @@ function Home() {
 					component={RouterLink}
 					to="/admin"
 				>
-					Admin Login Here
+					Admin Dashboard
 				</Link>
 			</Grid>
 		</Grid>

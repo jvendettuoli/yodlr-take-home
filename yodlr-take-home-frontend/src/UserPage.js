@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
 
-import UserContext from './UserContext';
-import RegisterForm from './RegisterForm';
 import YodlerApi from './YodlrApi';
 
 const useStyles = makeStyles({
 	root    : {
-		margin : 20
+		padding : 20
 	},
 	title   : {
 		marginBottom : 15
 	},
 	divider : {
 		marginBottom : 10
+	},
+	header  : {
+		display        : 'flex',
+		justifyContent : 'space-between'
 	}
 });
 
@@ -67,13 +71,23 @@ function UserPage() {
 
 	return (
 		<Container className={classes.root}>
-			<Typography
-				className={classes.title}
-				variant="h4"
-				gutterBottom
-			>
-				Hello {user.firstName}!
-			</Typography>
+			<Box className={classes.header}>
+				<Typography
+					className={classes.title}
+					variant="h4"
+					gutterBottom
+				>
+					Hello {user.firstName}!
+				</Typography>
+				<Link
+					variant="h5"
+					component={RouterLink}
+					to="/"
+					style={{ color: 'black', marginRight: 20 }}
+				>
+					Home
+				</Link>
+			</Box>
 			<Divider className={classes.divider} />
 			<Typography variant="h5">User Information</Typography>
 			<Typography>ID: {user.id}</Typography>
